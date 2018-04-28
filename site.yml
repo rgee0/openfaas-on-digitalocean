@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  roles:
+    - create_droplet
+  
+- hosts: "{{ hostvars.localhost.droplet_ip }}"
+  remote_user: root
+  gather_facts: false
+  pre_tasks:
+  - name: Install Python
+    raw: sudo apt-get -y install python-simplejson
+  - name: Import SSL
+    raw: python -c "import ssl"
+
+  roles: 
+   - configure_droplet
