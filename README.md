@@ -2,6 +2,8 @@
 
 Ansible Playbook to get you up and running with OpenFaas on Digital Ocean.  This is intended for evaluation / testing where quick and repeatable access to a clean instance is desired.
 
+Please be aware this playbook is not idempotent, specifically in droplet creation; if you run it _n_ times you will get _n_ droplets.
+
 ### Pre-requisites
 
 * [Install Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
@@ -22,7 +24,7 @@ Configure the [create_droplet role variables](create_droplet/vars/main.yml) acco
 
 ```
 
-* Token
+* token
 
 Generated under the API page on the DO portal
 
@@ -38,7 +40,7 @@ $ curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer '$DO
 
 These can be found on [Digital Ocean](https://developers.digitalocean.com/documentation/changelog/api-v2/new-size-slugs-for-droplet-plan-changes/)
 
-or through the API
+or through the API:
 ```sh
 $ curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer '$DOTOKEN "https://api.digitalocean.com/v2/sizes" 2>/dev/null | python -m json.tool
 ```
