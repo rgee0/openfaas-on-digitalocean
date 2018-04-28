@@ -1,6 +1,6 @@
 ## OpenFaaS-DO
 
-Ansible Playbook to get you up and running with OpenFaas on Digital Ocean.
+Ansible Playbook to get you up and running with OpenFaas on Digital Ocean.  This is intended for evaluation / testing where quick and repeatable access to a clean instance is desired.
 
 ### Pre-requisites
 
