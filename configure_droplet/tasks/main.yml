@@ -1,23 +1,35 @@
 ---
-- name: Look up latest openfaas release
+- name: Look up latest OpenFaaS release
   uri:
     url: https://api.github.com/repos/openfaas/faas/releases/latest
     return_content: yes
   register: OFVersion
 
+- name: Echo the latest OpenFaaS release
+  debug:
+    msg: "{{ OFVersion.json.tag_name }}" 
+
 - name: Install Docker
   raw: curl -sSL get.docker.com | sh
       
-- name: Init docker swarm
+- name: Init Docker swarm
   raw: docker swarm init --advertise-addr {{ hostvars.localhost.droplet_ip }}
 
 - name: Checkout the lastest OpenFaaS release
   git:
     repo: 'https://github.com/openfaas/faas.git'
     dest: ~/faas
-    version: "{{ OFVersion.json.tag_name }}"
+    #version: "{{ OFVersion.json.tag_name }}"
+    version: auto-auth
 
 - name: Deploy OpenFaas stack
   shell: ~/faas/deploy_stack.sh
   args:
     chdir: ~/faas/
+  register: deployOut
+
+- name: Echo deploy output
+  debug:
+    msg: 
+      - "{{ deployOut.stdout.split ('\n')[4] }}"
+      - "{{ deployOut.stdout.split ('\n')[5] }}" 
