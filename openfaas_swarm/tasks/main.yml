@@ -1,0 +1,30 @@
+---
+- name: Look up latest OpenFaaS release
+  uri:
+    url: https://api.github.com/repos/openfaas/faas/releases/latest
+    return_content: yes
+  register: OFVersion
+  
+- name: Checkout the lastest OpenFaaS release
+  git:
+    repo: 'https://github.com/openfaas/faas.git'
+    dest: ~/faas
+    version: "{{ OFVersion.json.tag_name }}"
+    
+- name: Temporary replace
+  replace:
+    path: ~/faas/docker-compose.yml
+    regexp: 'basic_auth: "false"$'
+    replace: 'basic_auth: "true"'
+
+- name: Deploy OpenFaaS stack
+  shell: ~/faas/deploy_stack.sh
+  args:
+    chdir: ~/faas/
+  register: deployOut
+
+- set_fact:
+     openfaas_URI: "http://{{ hostvars.localhost.droplet_ip }}:8080"
+     openfaas_user: "{{ deployOut.stdout.split('\n ')[1].split(': ')[1] }}"
+     openfaas_pwd: "{{ deployOut.stdout.split('\n ')[2].split(': ')[1] }}"
+     openfaas_cli: "{{ deployOut.stdout.split('\n ')[3].split('\n')[0] }} -g http://{{ hostvars.localhost.droplet_ip }}:8080"

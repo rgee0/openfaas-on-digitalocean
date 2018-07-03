@@ -1,0 +1,61 @@
+---
+- name: Turn off swap
+  raw: swapoff -a
+
+- name: install APT Transport HTTPS
+  package:
+    name: apt-transport-https
+    state: present
+
+- name: add apt-key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: add Kubernetes' APT repository
+  apt_repository:
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: 'kubernetes'
+
+- name: Run the equivalent of "apt-get update"
+  apt:
+    update_cache: yes
+
+- name: Install k8s packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - kubelet
+    - kubeadm
+    - kubernetes-cni
+
+- name: Initialise kubeadm
+  raw: kubeadm init
+  register: kubeadmInitOut
+
+- name: Add user
+  user:
+    name: openfaas
+    state: present
+    shell: /bin/bash
+    group: sudo
+    home: /home/openfaas
+
+- name: add kube config directory under $HOME
+  file:
+    path: /home/openfaas/.kube
+    state: directory
+    mode: 0755
+    group: sudo
+    owner: openfaas
+
+- name: copy admin.conf to user's kube config
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /home/openfaas/.kube/config
+    remote_src: yes
+    owner: openfaas
+    group: sudo
+
