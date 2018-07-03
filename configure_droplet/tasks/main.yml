@@ -28,8 +28,9 @@
     chdir: ~/faas/
   register: deployOut
 
-- name: Echo deploy output
+- name: Echo deployment details
   debug:
     msg: 
+      - "http://{{ hostvars.localhost.droplet_ip }}:8080"
       - "{{ deployOut.stdout.split ('\n')[4] }}"
       - "{{ deployOut.stdout.split ('\n')[5] }}" 
