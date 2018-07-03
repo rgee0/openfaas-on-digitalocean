@@ -1,4 +1,8 @@
 ---
+- name: "Display GitHub link"
+  debug:
+    msg: "Find me on github https://github.com/rgee0/openfaas-DO"
+    
 - name: "Create DO droplet"
   digital_ocean:
       state: present
@@ -12,13 +16,20 @@
       wait_timeout: 500
   register: OFDroplet
 
-- set_fact:
+- name: Set droplet_ip variable
+  set_fact:
      droplet_ip: "{{ OFDroplet.droplet.ip_address }}"
   no_log: True 
 
-- add_host: 
+- name: Add host to the inventory
+  add_host: 
       name: "{{ OFDroplet.droplet.ip_address }}"
   no_log: True 
 
-- name: Wait for the instances to boot by checking the ssh port
-  wait_for: host="{{ OFDroplet.droplet.ip_address }}" port=22 delay=30 timeout=60 state=started
+- name: Wait for the instance to boot by checking the ssh port
+  wait_for: 
+    host: "{{ OFDroplet.droplet.ip_address }}" 
+    port: 22 
+    delay: 30 
+    timeout: 120 
+    state: started

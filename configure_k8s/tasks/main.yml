@@ -1,0 +1,21 @@
+---
+- name: 
+  block:
+    - name: Adding the path in the bashrc files
+      lineinfile: 
+        dest: /home/openfaas/.bashrc"
+        line: "export KUBECONFIG=$HOME/.kube/config/admin.conf"
+        insertafter: "EOF"
+        state: present
+        create: true
+  
+    - name: Configure environment
+      raw: "export KUBECONFIG=/home/openfaas/.kube/config"
+  
+    - name: install networking - WeaveWorks Weave Net
+      raw: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+  
+    - name: remove masternode taint
+      command: "kubectl taint nodes --all node-role.kubernetes.io/master-"
+  become: true
+  become_user: openfaas

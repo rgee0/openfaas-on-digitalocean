@@ -13,4 +13,11 @@
     raw: python -c "import ssl"
 
   roles: 
-   - configure_droplet
+   - docker
+   - { role: configure_swarm, when: orchestrator == 'swarm' }
+   - { role: install_k8s, when: orchestrator == 'k8s'}
+   - { role: configure_k8s, when: orchestrator == 'k8s'}
+   - { role: helm, when: orchestrator == 'k8s'}
+   - { role: openfaas_k8s, when: orchestrator == 'k8s'}
+   - { role: openfaas_swarm, when: orchestrator == 'swarm'}
+   - output

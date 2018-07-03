@@ -1,0 +1,17 @@
+---
+- name: "waiting for Gateway to instantiate"
+  uri:
+      url: "{{ openfaas_URI }}"
+      status_code: 401
+  register: result
+  until: result.status == 401
+  retries: 90
+  delay: 10
+
+- name: Echo deployment details
+  debug:
+    msg: 
+      - "OpenFaaS Gateway: {{ openfaas_URI }}"
+      - "Gateway User: {{ openfaas_user }}"
+      - "Gateway Password: {{ openfaas_pwd }}"
+      - "CLI Gateway Login: {{ openfaas_cli }}"

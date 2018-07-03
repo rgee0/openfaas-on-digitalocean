@@ -1,0 +1,46 @@
+---
+- name: Look up latest FaaS-netes release
+  uri:
+    url: https://api.github.com/repos/openfaas/faas-netes/releases/latest
+    return_content: yes
+  register: OFNetesVersion
+
+- name: deploy openfaas helm
+  block:
+    - name: Checkout latest faas-netes
+      git:
+        repo: "https://github.com/openfaas/faas-netes"
+        dest: ~/faas-netes
+        version: "{{ OFNetesVersion.json.tag_name }}"
+    - name: apply namespaces
+      shell: "kubectl apply -f ./namespaces.yml"
+      args:
+        chdir: ~/faas-netes/
+      register: deployOut
+    - name: add openfaas helm repo
+      shell: "helm repo add openfaas https://openfaas.github.io/faas-netes/"
+    - name: call helm update  
+      shell: "helm repo update"
+    - name: wait for tiller pod to instantiate
+      shell: "/usr/bin/kubectl get pods --all-namespaces | grep tiller"
+      register: tiller
+      until:   tiller.stdout.find("Running") != -1 and tiller.stdout.find("1/1") != -1  
+      retries: 6
+      delay: 10
+    - name:  install openfaas chart
+      shell: "helm upgrade openfaas --install openfaas/openfaas --namespace openfaas --set functionNamespace=openfaas-fn"
+    - name: create password
+      shell: "head -c 12 /dev/urandom | shasum | cut -d' ' -f1"
+      register: password
+    - name: create secrets
+      shell: "kubectl -n openfaas create secret generic basic-auth --from-literal=basic-auth-user=admin --from-literal=basic-auth-password={{ password.stdout }}" 
+    - name: enable basic_auth
+      shell: "helm upgrade --reuse-values openfaas openfaas/openfaas --set basic_auth=true" 
+  become: true
+  become_user: openfaas
+
+- set_fact:
+     openfaas_URI: "http://{{ hostvars.localhost.droplet_ip }}:31112"
+     openfaas_user: "admin"
+     openfaas_pwd: "{{ password.stdout }}"
+     openfaas_cli: "echo -n {{ password.stdout }} | faas-cli login --username=admin --password-stdin -g http://{{ hostvars.localhost.droplet_ip }}:31112"

@@ -1,0 +1,32 @@
+---
+- name: Look up latest Helm release
+  uri:
+    url: https://api.github.com/repos/kubernetes/helm/releases/latest
+    return_content: yes
+  register: helmVersion
+
+- name: Download Helm
+  get_url: 
+    url: "https://storage.googleapis.com/kubernetes-helm/helm-{{ helmVersion.json.tag_name }}-linux-amd64.tar.gz"
+    dest: "/tmp/helm-{{ helmVersion.json.tag_name }}-linux-amd64.tar.gz"
+
+- name: unzip Helm binary
+  unarchive:
+    src: "/tmp/helm-{{ helmVersion.json.tag_name }}-linux-amd64.tar.gz"
+    dest: /tmp/
+    remote_src: yes
+
+- name: move Helm
+  command: mv /tmp/linux-amd64/helm /usr/local/bin/
+
+- name: Create RBAC permissions for Tiller
+  shell: | 
+    kubectl -n kube-system create sa tiller 
+    kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+  become: true
+  become_user: openfaas
+
+- name: init Helm
+  command: helm init --skip-refresh --upgrade --service-account tiller
+  become: true
+  become_user: openfaas

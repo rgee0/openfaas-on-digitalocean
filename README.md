@@ -4,6 +4,8 @@ Ansible Playbook to get you up and running with OpenFaas on Digital Ocean.  This
 
 Please be aware this playbook is not idempotent, specifically in droplet creation; if you run it _n_ times you will get _n_ droplets.
 
+Both swarm and kubernetes deployments are possible but passing `-e "orchestrator=swarm"` or `-e "orchestrator=k8s"`. 
+
 ### Pre-requisites
 
 * [Install Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
@@ -53,11 +55,33 @@ $ curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer '$DO
 
 ### Run the playbook
 
+* Using Swarm
 ```sh
-$ ansible-playbook site.yml
+$ ansible-playbook site.yml -e "orchestrator=swarm"
+```
+
+* Using Kubernetes
+```sh
+$ ansible-playbook site.yml -e "orchestrator=k8s"
 ```
 
 ### Head over to the UI
 
-Head to http://<droplet_ip>:8080 to find the UI of your new OpenFaaS instance.  
-There may be a slight delay as the images are downloaded and initialised.
+Check the output of the final task to find the location of the OpenFaaS UI.  For example:
+```
+ok: [209.97.188.227] => {
+    "msg": [
+        "OpenFaaS Gateway: http://209.97.188.227:8080",
+        "Gateway User: admin ",
+        "Gateway Password: c2db2b6d59df518392a81eff57c52486f9f2f46e2480d9de150904bbce0560bc",
+        "CLI Gateway Login: echo -n c2db2b6d59df518392a81eff57c52486f9f2f46e2480d9de150904bbce0560bc | faas-cli login --username=admi
+n --password-stdin -g http://209.97.188.227:8080"
+    ]
+}
+
+PLAY RECAP **************************************************************************************************************************
+209.97.188.227             : ok=12   changed=6    unreachable=0    failed=0
+localhost                  : ok=6    changed=2    unreachable=0    failed=0
+```
+
+As this deploys to public cloud basic auth is enabled by default for both orchestrators.
