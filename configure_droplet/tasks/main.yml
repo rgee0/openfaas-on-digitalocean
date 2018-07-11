@@ -22,7 +22,7 @@
     #version: "{{ OFVersion.json.tag_name }}"
     version: auto-auth
 
-- name: Deploy OpenFaas stack
+- name: Deploy OpenFaaS stack
   shell: ~/faas/deploy_stack.sh
   args:
     chdir: ~/faas/

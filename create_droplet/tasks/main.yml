@@ -1,4 +1,8 @@
 ---
+- name: "Display GitHub link"
+  debug:
+    msg: "Find me on github https://github.com/rgee0/openfaas-DO"
+    
 - name: "Create DO droplet"
   digital_ocean:
       state: present
