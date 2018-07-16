@@ -10,12 +10,6 @@
     repo: 'https://github.com/openfaas/faas.git'
     dest: ~/faas
     version: "{{ OFVersion.json.tag_name }}"
-    
-- name: Temporary replace
-  replace:
-    path: ~/faas/docker-compose.yml
-    regexp: 'basic_auth: "false"$'
-    replace: 'basic_auth: "true"'
 
 - name: Deploy OpenFaaS stack
   shell: ~/faas/deploy_stack.sh
