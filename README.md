@@ -4,7 +4,7 @@ Ansible Playbook to get you up and running with OpenFaas on [Digital Ocean](http
 
 Please be aware this playbook is not idempotent, specifically in droplet creation; if you run it _n_ times you will get _n_ droplets.
 
-Both swarm and kubernetes deployments are possible but passing `-e "orchestrator=swarm"` or `-e "orchestrator=k8s"`. 
+Both swarm and kubernetes deployments are possible by passing `-e "orchestrator=swarm"` or `-e "orchestrator=k8s"`. 
 
 ### Pre-requisites
 
@@ -74,8 +74,7 @@ ok: [209.97.188.227] => {
         "OpenFaaS Gateway: http://209.97.188.227:8080",
         "Gateway User: admin ",
         "Gateway Password: c2db2b6d59df518392a81eff57c52486f9f2f46e2480d9de150904bbce0560bc",
-        "CLI Gateway Login: echo -n c2db2b6d59df518392a81eff57c52486f9f2f46e2480d9de150904bbce0560bc | faas-cli login --username=admi
-n --password-stdin -g http://209.97.188.227:8080"
+        "CLI Gateway Login: echo -n c2db2b6d59df518392a81eff57c52486f9f2f46e2480d9de150904bbce0560bc | faas-cli login --username=admin --password-stdin -g http://209.97.188.227:8080"
     ]
 }
 
