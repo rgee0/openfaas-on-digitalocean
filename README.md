@@ -1,6 +1,6 @@
-## OpenFaaS-DO
+## OpenFaaS-on-DigitalOcean
 
-Ansible Playbook to get you up and running with OpenFaas on [Digital Ocean](https://m.do.co/c/2962aa9e56a1).  This is intended for evaluation / testing where quick and repeatable access to a clean instance is desired.
+Ansible Playbook to get you up and running with OpenFaas on [DigitalOcean](https://m.do.co/c/2962aa9e56a1).  This is intended for evaluation / testing where quick and repeatable access to a clean instance is desired.
 
 Please be aware this playbook is not idempotent, specifically in droplet creation; if you run it _n_ times you will get _n_ droplets.
 
@@ -10,7 +10,7 @@ Both swarm and kubernetes deployments are possible by passing `-e "orchestrator=
 
 * [Install Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 * [PIP](https://pip.pypa.io/en/stable/installing/) and [DOPY](https://pypi.org/project/dopy)
-* [Digital Ocean](https://m.do.co/c/2962aa9e56a1) account
+* [DigitalOcean](https://m.do.co/c/2962aa9e56a1) account
 
 ### Configure Variables
 
