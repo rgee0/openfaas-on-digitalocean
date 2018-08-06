@@ -3,4 +3,4 @@
   sshid: <your-ssh-key-id>
   size_slug: s-1vcpu-1gb
   region: lon1
-  image: ubuntu-17-10-x64
+  image: ubuntu-18-04-x64
