@@ -39,6 +39,7 @@ The ssh key IDs can be found by running:
 $ export DOTOKEN=<API token>
 $ curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer '$DOTOKEN "https://api.digitalocean.com/v2/account/keys" 2>/dev/null | python -m json.tool
 ```
+Look at the “ssh_keys” section and pick one of the SSH keys you want to use to log into the new droplet we will create. Use the “name” field to identify the key and then copy the “id” field
 
 * size_slug
 
