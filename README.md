@@ -30,11 +30,11 @@ Configure the [create_droplet role variables](create_droplet/vars/main.yml) acco
 
 * token
 
-Generated under the API page on the DO portal
+Click API in the DigitalOcean Dashboard, then under Tokens/Keys click “Generate New Token”.  Select Read & Write scopes.
 
 * sshid
 
-The ssh key IDs can be found but running:
+The ssh key IDs can be found by running:
 ```sh
 $ export DOTOKEN=<API token>
 $ curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer '$DOTOKEN "https://api.digitalocean.com/v2/account/keys" 2>/dev/null | python -m json.tool
@@ -42,7 +42,7 @@ $ curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer '$DO
 
 * size_slug
 
-These can be found on [Digital Ocean](https://developers.digitalocean.com/documentation/changelog/api-v2/new-size-slugs-for-droplet-plan-changes/)
+These can be found on [DigitalOcean](https://developers.digitalocean.com/documentation/changelog/api-v2/new-size-slugs-for-droplet-plan-changes/)
 
 or through the API:
 ```sh
