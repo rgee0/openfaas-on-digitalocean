@@ -1,13 +1,13 @@
 ---
 - name: "Display GitHub link"
   debug:
-    msg: "Find me on github https://github.com/rgee0/openfaas-DO"
+    msg: "Find me on github https://github.com/rgee0/openfaas-on-digitalocean"
     
 - name: "Create DO droplet"
   digital_ocean:
       state: present
       command: droplet
-      name: OpenFaaS
+      name: "openfaas{{ ansible_date_time.iso8601_basic_short }}"
       api_token: "{{ token }}"
       ssh_key_ids: "{{ sshid }}"
       size_id: "{{ size_slug }}"
@@ -23,12 +23,12 @@
 
 - name: Add host to the inventory
   add_host: 
-      name: "{{ OFDroplet.droplet.ip_address }}"
+      name: "{{ droplet_ip }}"
   no_log: True 
 
 - name: Wait for the instance to boot by checking the ssh port
   wait_for: 
-    host: "{{ OFDroplet.droplet.ip_address }}" 
+    host: "{{ droplet_ip }}" 
     port: 22 
     delay: 30 
     timeout: 120 

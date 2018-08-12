@@ -43,7 +43,7 @@ Look at the “ssh_keys” section and pick one of the SSH keys you want to use 
 
 * size_slug
 
-These can be found on [DigitalOcean](https://developers.digitalocean.com/documentation/changelog/api-v2/new-size-slugs-for-droplet-plan-changes/)
+Its recommended that `s-2vcpu-4gb` is used as a minimum.  Further options can be found on [DigitalOcean](https://developers.digitalocean.com/documentation/changelog/api-v2/new-size-slugs-for-droplet-plan-changes/)
 
 or through the API:
 ```sh

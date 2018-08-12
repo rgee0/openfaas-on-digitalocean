@@ -1,6 +1,6 @@
 ---
   token: <your-DO-API-key>
   sshid: <your-ssh-key-id>
-  size_slug: s-1vcpu-1gb
+  size_slug: s-2vcpu-4gb
   region: lon1
   image: ubuntu-18-04-x64

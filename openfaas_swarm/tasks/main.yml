@@ -1,7 +1,8 @@
 ---
 - name: Look up latest OpenFaaS release
   uri:
-    url: https://api.github.com/repos/openfaas/faas/releases/latest
+    url: https://github.com/openfaas/faas/releases/latest
+    method: GET
     return_content: yes
   register: OFVersion
   
@@ -9,7 +10,7 @@
   git:
     repo: 'https://github.com/openfaas/faas.git'
     dest: ~/faas
-    version: "{{ OFVersion.json.tag_name }}"
+    version: "{{ OFVersion.url.split('/')[-1] }}"
 
 - name: Deploy OpenFaaS stack
   shell: ~/faas/deploy_stack.sh
