@@ -58,7 +58,9 @@ $ curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer '$DO
 ### Run the playbook
 
 * Using Swarm (Ansible via Docker)
+
 Ensure the path to, and key names, are adjusted according to your set-up.
+
 ```sh
 $ docker run --rm -it -v $(pwd):/ansible/playbooks \
                       -v ~/.ssh/id_rsa:/root/.ssh/id_rsa \
@@ -67,7 +69,9 @@ $ docker run --rm -it -v $(pwd):/ansible/playbooks \
 ```
 
 * Using Kubernetes (Ansible via Docker)
+
 Ensure the path to, and key names, are adjusted according to your set-up.
+
 ```sh
 $ docker run --rm -it -v $(pwd):/ansible/playbooks \
                       -v ~/.ssh/id_rsa:/root/.ssh/id_rsa \
