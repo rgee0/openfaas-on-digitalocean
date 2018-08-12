@@ -8,8 +8,10 @@ Both swarm and kubernetes deployments are possible by passing `-e "orchestrator=
 
 ### Pre-requisites
 
-* [Install Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-* [PIP](https://pip.pypa.io/en/stable/installing/) and [DOPY](https://pypi.org/project/dopy)
+These vary depending on the mechanism by which Ansible is being invoked.  If Ansible is being installed onto a control machine then all three apply.  Alternatively a Docker image has been made available at `rgee0/ansible-playbook:2.6.0` which includes the first two pre-reqs.
+
+* [Install Ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) (Skip if using Docker image)
+* [PIP](https://pip.pypa.io/en/stable/installing/) and [DOPY](https://pypi.org/project/dopy) (Skip if using Docker image)
 * [DigitalOcean](https://m.do.co/c/2962aa9e56a1) account
 
 ### Configure Variables
@@ -55,12 +57,30 @@ $ curl -X GET -H 'Content-Type: application/json' -H 'Authorization: Bearer '$DO
 
 ### Run the playbook
 
-* Using Swarm
+* Using Swarm (Ansible via Docker)
+Ensure the path to, and key names, are adjusted according to your set-up.
+```sh
+$ docker run --rm -it -v $(pwd):/ansible/playbooks \
+                      -v ~/.ssh/id_rsa:/root/.ssh/id_rsa \
+                      -v ~/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub \
+                      rgee0/ansible-playbook:2.6.0 site.yml -e "orchestrator=swarm"
+```
+
+* Using Kubernetes (Ansible via Docker)
+Ensure the path to, and key names, are adjusted according to your set-up.
+```sh
+$ docker run --rm -it -v $(pwd):/ansible/playbooks \
+                      -v ~/.ssh/id_rsa:/root/.ssh/id_rsa \
+                      -v ~/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub \
+                      rgee0/ansible-playbook:2.6.0 site.yml -e "orchestrator=k8s"
+```
+
+* Using Swarm (local Ansible installation)
 ```sh
 $ ansible-playbook site.yml -e "orchestrator=swarm"
 ```
 
-* Using Kubernetes
+* Using Kubernetes (local Ansible installation)
 ```sh
 $ ansible-playbook site.yml -e "orchestrator=k8s"
 ```
