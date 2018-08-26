@@ -7,7 +7,7 @@
   digital_ocean:
       state: present
       command: droplet
-      name: "openfaas{{ ansible_date_time.iso8601_basic_short }}"
+      name: "openfaas-{{ ansible_date_time.iso8601_basic_short }}"
       api_token: "{{ token }}"
       ssh_key_ids: "{{ sshid }}"
       size_id: "{{ size_slug }}"
