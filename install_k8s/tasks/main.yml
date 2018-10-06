@@ -29,7 +29,7 @@
     packages:
     - kubelet
     - kubeadm
-    - kubernetes-cni
+    - kubernetes-cni=0.6.0-00
 
 - name: Initialise kubeadm
   raw: kubeadm init
