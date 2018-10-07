@@ -37,10 +37,15 @@
       shell: "kubectl -n openfaas create secret generic basic-auth --from-literal=basic-auth-user=admin --from-literal=basic-auth-password={{ password.stdout }}" 
     - name: enable basic_auth
       shell: "helm upgrade --reuse-values openfaas openfaas/openfaas --set basic_auth=true" 
+    - name: Slurp .kube/config
+      slurp:
+        src: /home/openfaas/.kube/config
+      register: kubeconf
   become: true
   become_user: openfaas
 
 - set_fact:
+     openfaas_kubeConf: "{{ kubeconf['content'] | b64decode }}"
      openfaas_URI: "http://{{ hostvars.localhost.droplet_ip }}:31112"
      openfaas_user: "admin"
      openfaas_pwd: "{{ password.stdout }}"
