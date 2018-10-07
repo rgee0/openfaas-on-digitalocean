@@ -11,6 +11,7 @@
 - name: Echo deployment details
   debug:
     msg: 
+      - "{{ openfaas_kubeConf }}"
       - "OpenFaaS Gateway: {{ openfaas_URI }}"
       - "Gateway User: {{ openfaas_user }}"
       - "Gateway Password: {{ openfaas_pwd }}"
