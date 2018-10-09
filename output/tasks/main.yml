@@ -10,10 +10,15 @@
   retries: 90
   delay: 10
 
-- name: Echo deployment details
+- name: Echo .kube/config details
   debug:
     msg: 
       - "{{ openfaas_kubeConf }}"
+  when: openfaas_kubeConf is defined
+
+- name: Echo deployment details
+  debug:
+    msg: 
       - "OpenFaaS Gateway: {{ openfaas_URI }}"
       - "Gateway User: {{ openfaas_user }}"
       - "Gateway Password: {{ openfaas_pwd }}"
