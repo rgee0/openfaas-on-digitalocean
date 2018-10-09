@@ -1,3 +1,5 @@
 ---
+# Copyright (c) Richard Gee 2018. All rights reserved.
+# Licensed under the MIT license. See LICENSE file in the project root for full license information.
 - name: Init Docker swarm
   raw: docker swarm init --advertise-addr {{ hostvars.localhost.droplet_ip }}
