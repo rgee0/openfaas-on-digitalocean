@@ -5,7 +5,7 @@
   block:
     - name: Adding the path in the bashrc files
       lineinfile: 
-        dest: /home/openfaas/.bashrc"
+        dest: /home/openfaas/.bashrc
         line: "export KUBECONFIG=$HOME/.kube/config/admin.conf"
         insertafter: "EOF"
         state: present
