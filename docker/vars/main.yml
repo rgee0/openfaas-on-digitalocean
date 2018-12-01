@@ -1,6 +1,4 @@
 ---
 # Copyright (c) Richard Gee 2018. All rights reserved.
 # Licensed under the MIT license. See LICENSE file in the project root for full license information.
-- name: install Docker
-  raw: export VERSION={{ dockerVersion }} && curl -sSL get.docker.com | sh
-      
+  dockerVersion: 18.06
